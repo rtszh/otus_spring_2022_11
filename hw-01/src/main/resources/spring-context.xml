@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="appConfig" class="ru.otus.spring.configs.AppConfig">
+        <constructor-arg name="testQnAPath" value="testQnA.csv"/>
+    </bean>
+
+    <bean id="csvProcessor" class="ru.otus.spring.processors.impl.CsvProcessorImpl">
+    </bean>
+
+    <bean id="rowDaoImpl" class="ru.otus.spring.dao.impl.RowDaoImpl">
+        <constructor-arg name="appConfig" ref="appConfig"/>
+        <constructor-arg name="csvProcessor" ref="csvProcessor"/>
+    </bean>
+
+    <bean id="personService" class="ru.otus.spring.service.impl.RowServiceImpl">
+        <constructor-arg name="rowDao" ref="rowDaoImpl"/>
+    </bean>
+
+</beans>
