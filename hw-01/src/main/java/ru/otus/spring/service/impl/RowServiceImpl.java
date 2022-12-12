@@ -18,7 +18,7 @@ public class RowServiceImpl implements RowService {
         var rows = rowDao.readAllRows();
 
         return rows.stream()
-                .map(row -> String.format("q: %s || a: %s", row.getQuestion(), row.getAnswer()))
+                .map(row -> String.format("q: %s? || a: %s", row.getQuestion(), row.getAnswer()))
                 .collect(Collectors.joining("\n"));
     }
 }

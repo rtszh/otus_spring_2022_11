@@ -11,7 +11,6 @@ import java.util.List;
 public class CsvProcessorImpl implements CsvProcessor {
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> List<T> parseCsvFile(Resource resource, Class<T> clazz) {
 
         FileReader fileReader;
