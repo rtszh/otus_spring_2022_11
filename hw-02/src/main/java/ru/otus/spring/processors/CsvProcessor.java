@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CsvProcessor {
 
-    <T> List<T> parseCsvFile(Resource resource, Class<T> clazz);
+    <T> List<T> parseCsv(Resource resource, Class<T> clazz);
 }

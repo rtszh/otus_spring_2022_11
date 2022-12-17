@@ -5,25 +5,29 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import ru.otus.spring.processors.CsvProcessor;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 @Component
 public class CsvProcessorImpl implements CsvProcessor {
 
     @Override
-    public <T> List<T> parseCsvFile(Resource resource, Class<T> clazz) {
+    public <T> List<T> parseCsv(Resource resource, Class<T> clazz) {
 
-        FileReader fileReader;
+        InputStream inputStream;
+        Reader reader;
 
         try {
-            fileReader = new FileReader(resource.getFile());
+            inputStream = resource.getInputStream();
+            reader = new InputStreamReader(inputStream);
         } catch (IOException e) {
             throw new RuntimeException("Файл не найден: " + resource.getFilename());
         }
 
-        return new CsvToBeanBuilder(fileReader)
+        return new CsvToBeanBuilder(reader)
                 .withType(clazz)
                 .withSkipLines(1)
                 .build()

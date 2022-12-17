@@ -28,7 +28,7 @@ class RowDaoImplTestData {
     @Test
     void readAllRows() {
         var resource = properties.getTestQnAPath();
-        var rowListFromFile = csvProcessor.parseCsvFile(resource, Row.class);
+        var rowListFromFile = csvProcessor.parseCsv(resource, Row.class);
 
         var correctRowList = List.of(
                 new Row("Question1", "Answer1"),

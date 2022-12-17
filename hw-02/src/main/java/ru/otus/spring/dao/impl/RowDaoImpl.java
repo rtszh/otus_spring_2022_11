@@ -21,6 +21,6 @@ public class RowDaoImpl implements RowDao {
 
     @Override
     public List<Row> readAllRows() {
-        return csvProcessor.parseCsvFile(appProperties.getTestQnAPath(), Row.class);
+        return csvProcessor.parseCsv(appProperties.getTestQnAPath(), Row.class);
     }
 }

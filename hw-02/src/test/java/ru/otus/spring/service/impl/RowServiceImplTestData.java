@@ -3,8 +3,10 @@ package ru.otus.spring.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.ComponentScan;
 import ru.otus.spring.dao.RowDao;
 import ru.otus.spring.domain.Row;
 import ru.otus.spring.domain.TestData;
@@ -21,12 +23,8 @@ class RowServiceImplTestData {
     @Mock
     private RowDao rowDao;
 
-    private RowService rowService;
-
-    @BeforeEach
-    void setUp() {
-        rowService = new RowServiceImpl(rowDao);
-    }
+    @InjectMocks
+    private RowServiceImpl rowService;
 
     @Test
     void getTest() {
