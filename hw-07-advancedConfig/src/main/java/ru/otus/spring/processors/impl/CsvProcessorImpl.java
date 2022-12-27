@@ -17,20 +17,20 @@ public class CsvProcessorImpl implements CsvProcessor {
     @Override
     public <T> List<T> parseCsv(Resource resource, Class<T> clazz) {
 
-        InputStream inputStream;
-        Reader reader;
+        List<T> result;
 
-        try {
-            inputStream = resource.getInputStream();
-            reader = new InputStreamReader(inputStream);
+        try (InputStream inputStream = resource.getInputStream();
+             Reader reader = new InputStreamReader(inputStream)
+        ) {
+            result = new CsvToBeanBuilder(reader)
+                    .withType(clazz)
+                    .withSkipLines(1)
+                    .build()
+                    .parse();
         } catch (IOException e) {
             throw new RuntimeException("File not found: " + resource.getFilename());
         }
 
-        return new CsvToBeanBuilder(reader)
-                .withType(clazz)
-                .withSkipLines(1)
-                .build()
-                .parse();
+        return result;
     }
 }
