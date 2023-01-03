@@ -1,4 +1,5 @@
 target/
+/spring-shell.log
 
 ### STS ###
 .apt_generated
