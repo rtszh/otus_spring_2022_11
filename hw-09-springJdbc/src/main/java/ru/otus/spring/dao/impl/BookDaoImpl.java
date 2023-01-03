@@ -72,18 +72,6 @@ public class BookDaoImpl implements BookDao {
         });
     }
 
-    private List<Genre> getInsertedGenres(List<GenreDto> genreDtoList) {
-        return genreDtoList.stream()
-                .map(genreDao::insert)
-                .collect(Collectors.toList());
-    }
-
-    private List<Author> getInsertedAuthors(List<AuthorDto> authorDtoList) {
-        return authorDtoList.stream()
-                .map(authorDao::insert)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public List<Book> getAll() {
         List<BookRawDto> rawBookData = getRawBookData();
@@ -100,6 +88,41 @@ public class BookDaoImpl implements BookDao {
         checkBookListSize(bookList);
 
         return bookList.get(0);
+    }
+
+    @Override
+    public void deleteByTitle(String title) {
+        Map<String, String> params = Collections.singletonMap("title", title);
+
+        jdbc.update(
+                "DELETE FROM book WHERE title = :title",
+                params
+        );
+    }
+
+    @Override
+    public void update(BookUpdateDto bookUpdateDto) {
+        deleteByTitle(bookUpdateDto.getOldTitle());
+
+        var bookDto = BookDto.builder()
+                .title(bookUpdateDto.getUpdatedTitle())
+                .authorsDto(bookUpdateDto.getUpdatedAuthorsDto())
+                .genresDto(bookUpdateDto.getUpdatedGenresDto())
+                .build();
+
+        insert(bookDto);
+    }
+
+    private List<Genre> getInsertedGenres(List<GenreDto> genreDtoList) {
+        return genreDtoList.stream()
+                .map(genreDao::insert)
+                .collect(Collectors.toList());
+    }
+
+    private List<Author> getInsertedAuthors(List<AuthorDto> authorDtoList) {
+        return authorDtoList.stream()
+                .map(authorDao::insert)
+                .collect(Collectors.toList());
     }
 
     private void checkBookListSize(List<Book> bookList) {
@@ -208,29 +231,6 @@ public class BookDaoImpl implements BookDao {
                 .map(genreDao::getById)
                 .distinct()
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteByTitle(String title) {
-        Map<String, String> params = Collections.singletonMap("title", title);
-
-        jdbc.update(
-                "DELETE FROM book WHERE title = :title",
-                params
-        );
-    }
-
-    @Override
-    public void update(BookUpdateDto bookUpdateDto) {
-        deleteByTitle(bookUpdateDto.getOldTitle());
-
-        var bookDto = BookDto.builder()
-                .title(bookUpdateDto.getUpdatedTitle())
-                .authorsDto(bookUpdateDto.getUpdatedAuthorsDto())
-                .genresDto(bookUpdateDto.getUpdatedGenresDto())
-                .build();
-
-        insert(bookDto);
     }
 
     private static class BookMapper implements RowMapper<BookRawDto> {
